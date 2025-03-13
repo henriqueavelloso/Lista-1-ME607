@@ -1,0 +1,73 @@
+---
+title: "Questão 7"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+7. Utilize o dataset `gafa_stock` do pacote `fpp3` e selecione apenas os dados referentes à cotação das ações da AAPL.
+
+
+ **a)** Faça um gráfico de sequência para os preços de fechamento das ações da AAPL.
+
+```{r include=FALSE}
+library(fpp3)
+library(ggplot2)
+library(dplyr)
+```
+
+
+```{r echo=TRUE}
+dados <- gafa_stock %>%
+  filter(Symbol == "AAPL")
+```
+
+```{r echo=FALSE}
+head(dados, 5)
+```
+
+
+```{r echo=TRUE}
+ggplot(dados, aes(x = Date, y = Close)) +
+  geom_line(color = "blue") +  # Adiciona a linha do gráfico
+  labs(title = "Cotação das ações da AAPL",
+       x = "Data",
+       y = "Preço de Fechamento")
+```
+
+
+**b)** Transforme os preços de fechamento em retornos financeiros
+$$ r_t = \frac{P_t - P_{t-1}}{P_{t-1}} $$
+e faça um gráfico da função de autocorrelação e autocorrelação parcial dos retornos.
+
+```{r echo=TRUE}
+# Calcular os retornos financeiros
+retorno <- dados %>%
+  mutate(Return = (Close - lag(Close)) / lag(Close))
+```
+
+```{r echo=FALSE}
+head(retorno[, c("Close", "Return")], 5)
+```
+
+```{r}
+# Gráfico da função de autocorrelação dos retornos
+retorno %>%
+  drop_na(Return) %>%  
+  ACF(Return) %>%
+  autoplot() +
+  labs(title = "Autocorrelação dos Retornos da AAPL")
+```
+
+```{r}
+# Gráfico da função de autocorrelação parcial dos retornos
+retorno %>%
+  drop_na(Return) %>%  
+  PACF(Return) %>%
+  autoplot() +
+  labs(title = "Autocorrelação Parcial dos Retornos da AAPL")
+```
+
+
