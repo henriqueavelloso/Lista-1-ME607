@@ -69,7 +69,7 @@ plt.show()
 
 """# **Lag plots**"""
 
-btc['quarter'] = btc['timestamp'].dt.quarter  # Cria a coluna 'quarter'
+btc['quarter'] = btc['timestamp'].dt.quarter
 max_lag = 6
 
 fig, axes = plt.subplots(2, 3, figsize=(15, 15))
@@ -79,7 +79,7 @@ for i in range(max_lag):
     lag = i + 1
     btc[f'lag_{lag}'] = btc['close'].shift(lag)
     sns.scatterplot(
-        data=btc, x=f'lag_{lag}', y='close',  # Usa btc em vez de temp_df
+        data=btc, x=f'lag_{lag}', y='close',
         hue='quarter',
         ax=axes[i]
     )
