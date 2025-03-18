@@ -31,7 +31,7 @@ head(dados, 5)
 
 ```{r echo=TRUE}
 ggplot(dados, aes(x = Date, y = Close)) +
-  geom_line(color = "blue") +  # Adiciona a linha do gráfico
+  geom_line(color = "blue") +
   labs(title = "Cotação das ações da AAPL",
        x = "Data",
        y = "Preço de Fechamento")
@@ -43,7 +43,6 @@ $$ r_t = \frac{P_t - P_{t-1}}{P_{t-1}} $$
 e faça um gráfico da função de autocorrelação e autocorrelação parcial dos retornos.
 
 ```{r echo=TRUE}
-# Calcular os retornos financeiros
 retorno <- dados %>%
   mutate(Return = (Close - lag(Close)) / lag(Close))
 ```
@@ -53,7 +52,6 @@ head(retorno[, c("Close", "Return")], 5)
 ```
 
 ```{r}
-# Gráfico da função de autocorrelação dos retornos
 retorno %>%
   drop_na(Return) %>%  
   ACF(Return) %>%
@@ -62,7 +60,6 @@ retorno %>%
 ```
 
 ```{r}
-# Gráfico da função de autocorrelação parcial dos retornos
 retorno %>%
   drop_na(Return) %>%  
   PACF(Return) %>%
